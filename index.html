@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+<div class="container text-center">
+  <h1>How to become?</h1>
+  <p></p>
+</div>
+
+<div class="container">
+  <div class="left">
+
+    <div class="js-filters filters">
+      <a href="#" class="filter-skill">filter-skill</a>
+      <a href="#" class="filter-tag">filter-tag</a>
+      <a href="#" class="filter-level">filter-level</a>
+    </div>
+
+  </div>
+  <div class="right">
+
+    <div class="">
+      <div class="js-courses courses-grid">
+        {{content}}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="./data.js"></script>
+<script src="./jquery-3.3.1.min.js"></script>
+<script src="./isotope.pkgd.js"></script>
+
+<script>
+
+  var coursesGridContainer = document.querySelector('.js-courses');
+  var filtersContainer = document.querySelector('.js-filters');
+
+  function renderArray(items, type) {
+    var itemHtml = '';
+    switch (type) {
+      case 'levels':
+
+        items.forEach(function (item) {
+
+          itemHtml += '<div class="course__level ' + item + '">' + item + '</div>';
+
+        });
+
+        break;
+      case 'tags':
+
+        items.forEach(function (item) {
+
+          itemHtml += '<div class="course__tag ' + item + '">' + item + '</div>';
+
+        });
+
+        break;
+      case 'skills':
+
+        items.forEach(function (item) {
+
+          itemHtml += '<div class="course__skill ' + item + '">' + item + '</div>';
+
+        });
+
+        break;
+    }
+    return itemHtml;
+  }
+
+  function createClasses(array) {
+
+    var classes = '';
+    array.forEach(function (item) {
+      classes += item + ' ';
+    })
+
+    return classes;
+  }
+
+  function renderItem(item) {
+    var itemHtml = '<div class="course {{courseClasses}}"><div class="course__title"><a href="{{url1}}" target="_blank">{{title}}</a></div>' +
+        '<div class="course__description">{{description}}</div>' +
+        '<div class="course__tags">{{tags}}</div>' +
+        '<div class="course__levels">{{levels}}</div>' +
+        '<div class="course__skills">{{skills}}</div>' +
+        '<div class="course__url">{{url2}}</div>' +
+        '</div>';
+
+    itemHtml = itemHtml.replace('{{title}}', item.title);
+    itemHtml = itemHtml.replace('{{description}}', item.description);
+    itemHtml = itemHtml.replace('{{levels}}', renderArray(item.levels, 'levels'));
+    itemHtml = itemHtml.replace('{{skills}}', renderArray(item.skills, 'skills'));
+    itemHtml = itemHtml.replace('{{tags}}', renderArray(item.tags, 'tags'));
+    itemHtml = itemHtml.replace('{{url1}}', item.url);
+    itemHtml = itemHtml.replace('{{url2}}', item.url);
+
+    var classes = createClasses(item.levels);
+    classes += createClasses(item.skills);
+    classes += createClasses(item.tags);
+
+    itemHtml = itemHtml.replace('{{courseClasses}}', classes);
+
+    return itemHtml;
+  }
+
+  function renderData(data) {
+
+    var coursesGridHtml = '';
+
+    data.forEach(function (item) {
+      coursesGridHtml += renderItem(item);
+    });
+
+    coursesGridContainer.innerHTML = coursesGridHtml;
+
+    renderDataFinished();
+  }
+
+  function renderDataFinished() {
+
+//    $('.courses-grid').isotope({
+//      // options...
+//      itemSelector: '.course',
+//      masonry: {
+////        columnWidth: 200
+//      }
+//    });
+  }
+
+  function createProps(object, name, array) {
+
+    object[name] = {};
+
+    array.forEach(function (item) {
+      if (object[name][item]) {
+        object[name][item] += 1;
+      } else {
+        object[name][item] = 1;
+      }
+    });
+
+  }
+
+  function renderFilter(key, filter) {
+    var filtersWrapperHtml = '<div class="filters__group"><div class="filter__group-label">' + key + ':</div>{{filter}}</div>';
+
+    var filtersHtml = '';
+
+    Object.keys(filter).forEach(function (key, index) {
+      // key: the name of the object key
+      // index: the ordinal position of the key within the object
+      filtersHtml += '<a href="#" class="filter" id="' + key + '">' + key + ' <span class="filter__badge">(' + filter[key] + ')</span></a>'
+    });
+
+    filtersWrapperHtml = filtersWrapperHtml.replace('{{filter}}', filtersHtml)
+
+    return filtersWrapperHtml;
+  }
+
+  function renderFilters(data) {
+    var filters = {};
+
+    var tags = [];
+    var levels = [];
+    var skills = [];
+
+    data.forEach(function (item) {
+      tags = tags.concat(item.tags);
+      levels = levels.concat(item.levels);
+      skills = skills.concat(item.skills);
+    });
+
+    createProps(filters, 'tags', tags);
+    createProps(filters, 'levels', levels);
+    createProps(filters, 'skills', skills);
+
+    console.log(filters);
+
+    var filtersHtml = '';
+
+    Object.keys(filters).forEach(function (key, index) {
+      // key: the name of the object key
+      // index: the ordinal position of the key within the object
+
+      if (typeof filters[key] === 'object') {
+
+        filtersHtml += renderFilter(key, filters[key]);
+
+        console.log('root', key, filters[key]);
+
+      } else {
+        console.log('prop', key);
+      }
+
+    });
+
+    filtersContainer.innerHTML = filtersHtml;
+
+  }
+
+  function initFilters() {
+
+    filtersContainer.addEventListener("click", function (e) {
+      // e.target was the clicked element
+      if (e.target && e.target.matches("a.filter")) {
+
+        e.target.getAttribute('id');
+
+        var selector = '.' + e.target.getAttribute('id');
+
+        $('.course').hide();
+        $(selector).show();
+
+
+      }
+    });
+
+  }
+
+  renderData(courses);
+  renderFilters(courses);
+
+  initFilters();
+
+</script>
+
+</body>
+</html>
