@@ -7,15 +7,53 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <link rel="stylesheet" href="style.css">
+  
+  
 </head>
 <body>
+<header>
+       <section class="header-title"><h1>Epam Training page</h1></section>
+        <section class="header-motivation">
+            <ul class="header-motivation_wrapper">
+                <li class="header-motivation_item">
+                    <h2>Raise your level</h2>
+                    <p>Do you have what it takes to become new level developer ? Do you want to improve your skills and get new titile? Here you can find all kind of information and tests to make it happen!</p>
+                </li>
+                <li class="header-motivation_item">
+                <h2>Become an expert</h2>
+                <p>There is also a room for improvement. you can be better and achieve much more ahead.We are here to help you with this.</p>
+                </li>
+                <li class="header-motivation_item">
+                    <h2>Refresh your knowledge</h2>
+                    <p>Forgot something and want to refresh your knowledge? Wait no more, our library always grows and detailed filters can help you in no time.</p>
+                </li>
+            </ul>
+        </section>
+        <section class="level">
+            <div class="choose-level">
+                <h3>Choose your desired developer level</h3>
+            </div>
+            <ul class="level-wrapper">
+                <li class="level-item"><a href="#">D1</a></li>
+                <li class="level-item"><a href="#">D2</a></li>
+                <li class="level-item"><a href="#">D3</a></li>
+                <li class="level-item"><a href="#">D4</a></li>
+            </ul>
+            <div class="choose-filters">
+                <h3>...or use a detailed filter</h3>
+            </div>
+        </section>
 
-
+    
+</header>
+<main class="main">
+<!--
 <div class="container text-center">
   <h1>How to become?</h1>
   <p></p>
 </div>
-
+-->
+ 
 <div class="container">
   <div class="left">
 
@@ -36,11 +74,15 @@
 
   </div>
 </div>
-
+</main>
 <script src="./data.js"></script>
 <script src="./jquery-3.3.1.min.js"></script>
 <script src="./isotope.pkgd.js"></script>
 
+<script src="holmes.js/js/holmes.js" ></script>
+<script> holmes({
+  find: '.js-courses .course'
+});</script>
 <script>
 
   var coursesGridContainer = document.querySelector('.js-courses');
@@ -92,11 +134,9 @@
 
   function renderItem(item) {
     var itemHtml = '<div class="course {{courseClasses}}"><div class="course__title"><a href="{{url1}}" target="_blank">{{title}}</a></div>' +
-        '<div class="course__description">{{description}}</div>' +
         '<div class="course__tags">{{tags}}</div>' +
         '<div class="course__levels">{{levels}}</div>' +
         '<div class="course__skills">{{skills}}</div>' +
-        '<div class="course__url">{{url2}}</div>' +
         '</div>';
 
     itemHtml = itemHtml.replace('{{title}}', item.title);
