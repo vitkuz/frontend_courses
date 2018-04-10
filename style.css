@@ -120,6 +120,10 @@ header {}
 .level-item a:hover {
     background: #fff;
 }
+.level-item a:focus {
+    background: #fff;
+}
+
 /*Filter warpper*/
 .container {
     display: flex;
@@ -147,11 +151,14 @@ header {}
     display: inline-block;
     font-size: .9rem;
     border:1px solid transparent;
+    text-shadow: 0px 1px 5px black;
     
     
 }
 .filter:hover{
-   
+    border: 1px solid  #656668;
+}
+.filter:focus{
     border: 1px solid  #656668;
 }
 .filter__group-label {
@@ -198,6 +205,12 @@ header {}
     font-weight: bold;
     font-size: 24px;
     margin-bottom: 1rem;
+   
+}
+.course__title a{
+	 color:#000;
+    text-decoration: none;
+    font-size: 2rem;
 }
 
 .course__description {
@@ -205,25 +218,42 @@ header {}
 }
 
 .course__levels,
-.course__tags {
-    display: flex;
-    flex-wrap: wrap;
+.course__tags,.course__skills {
+   display: inline-flex;
+    flex-wrap: nowrap;
     margin-bottom: 0.5rem;
     font-size: 12px;
 }
 
 .course__level {
     padding: .5rem;
-    background: red;
+    background: #c8c8c8;
+     text-shadow: 0px 1px 5px black;
     color: #fff;
     margin-right: 0.5rem;
+       text-transform: uppercase;
 }
 
 .course__tag {
     padding: .5rem;
-    background: #000;
+    background: #c8c8c8;
     color: #fff;
     margin-right: 0.5rem;
+    text-shadow: 0px 1px 5px black;
+    text-transform: uppercase;
+   
+}
+.course__skills {
+     text-shadow: 0px 1px 5px black;
+    color: #fff;
+    margin-right: 0.5rem;
+    
+}
+.course__skill {
+	  margin-right: .5rem;
+       background: #c8c8c8;
+    padding: .5rem;
+      text-transform: uppercase;
 }
 /*Filter items*/
 .filters {
