@@ -129,15 +129,10 @@
     renderDataFinished();
   }
 
-  function renderDataFinished() {
+  function renderDataFinished(data) {
 
-//    $('.courses-grid').isotope({
-//      // options...
-//      itemSelector: '.course',
-//      masonry: {
-////        columnWidth: 200
-//      }
-//    });
+
+
   }
 
   function createProps(object, name, array) {
@@ -230,7 +225,51 @@
 
   }
 
-  renderData(courses);
+  function transformData(courses) {
+    var grouped  = {};
+
+    courses.forEach(function (item) {
+      if (!grouped[item['topic']]) {
+        grouped[item['topic']] = [];
+        grouped[item['topic']].push(item);
+      } else {
+        grouped[item['topic']].push(item);
+      }
+    });
+
+    window.grouped = grouped;
+
+    console.log(grouped);
+    renderTransformedData(grouped);
+  }
+
+  function renderTransformedData(grouped) {
+
+    var coursesGridHtml ='';
+
+    for (var property in grouped) {
+      if (grouped.hasOwnProperty(property)) {
+        console.log(property);
+        coursesGridHtml += '<div class="group">';
+        coursesGridHtml += '<h1>'+property+'</h1>';
+          grouped[property].forEach(function (item) {
+            coursesGridHtml += renderItem(item);
+          });
+        coursesGridHtml += '</div>';
+
+      }
+    }
+
+    coursesGridContainer.innerHTML = coursesGridHtml;
+    renderDataFinished();
+
+  }
+
+//  renderData(courses);
+//  transformData(courses);
+
+  transformData(courses);
+
   renderFilters(courses);
 
   initFilters();
